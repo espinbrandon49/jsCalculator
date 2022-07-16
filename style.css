@@ -1,0 +1,35 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: red;
+}
+#calculator {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+#display {
+  border: 1px solid black;
+  font-size: 50px;
+  display: flex;
+  justify-content: end;
+  height: 50px;
+}
+.buttons {
+  bottom: 1px solid black;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  }
+#equalBtn {
+  width: 200%;
+}
+button {
+  width: 75px;
+  height: 75px;
+  font-size: 30px;
+  background-color: green;
+}
