@@ -65,6 +65,7 @@ function performOperation () {
     operator.splice(0, operator.length)
     number2.splice(0, number2.length)
   })()
+
   decimalBtn.disabled = false
 }
 
@@ -121,7 +122,10 @@ clear.addEventListener('click', () => {
 negative.addEventListener('click', () => {
   const neg = '-'
   if (operator.length < 1) {
-    if (!number1.includes(neg)) {
+    if (number1[0] < 0) {
+      number1[0] *= -1
+      displayScreen(number1)
+    }else if (!number1.includes(neg)) {
       number1.unshift(neg)
       displayScreen(number1)
     } else {
