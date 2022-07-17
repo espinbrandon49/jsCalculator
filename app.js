@@ -9,6 +9,7 @@ const ceBtn = document.getElementById('ceBtn')
 const clear = document.getElementById('clear')
 const negative = document.getElementById('negative')
 
+// Function that displays the operation values
 function displayScreen(arr) {
   display.innerHTML = ''
   for (let i = 0; i < arr.length; i++) {
@@ -16,6 +17,7 @@ function displayScreen(arr) {
   }
 }
 
+// Function that stores operations
 function solution(array, num1, num2) {
   let result
   switch (array[0]) {
@@ -35,6 +37,7 @@ function solution(array, num1, num2) {
   return result
 }
 
+// Function that performs operations
 function performOperation() {
   let num1 = 0, num2 = 0;
   if (operator.length < 1) {
@@ -53,6 +56,8 @@ function performOperation() {
     : num2 = parseFloat(number2.join(''))
 
   const displayOperation = (() => {
+    console.log(number1)
+    console.log(number2)
     const solved = solution(operator, num1, num2)
     solved % 1 == 0
       ? display.innerHTML = solved
@@ -62,19 +67,23 @@ function performOperation() {
     operator.splice(0, operator.length)
     number2.splice(0, number2.length)
   })()
+
+  if (number1[0] == Infinity) {
+    display.innerHTML = 'Thanos was here';
+    document.querySelectorAll('button').forEach(element => element.disabled = true)
+  }
   decimalBtn.disabled = false
 }
-
-// Event Listeners to evaluate an expression
+// click to evaluate an expression
 equalBtn.addEventListener('click', performOperation)
-
-// keydown '='
-// window.addEventListener('keydown', (e) => {
-//   console.log(e.keyCode)
-//   if (e.keyCode == '187') {
-//     performOperation()
-//   }
-// })
+// keydown enter to evaluate an expression
+window.addEventListener('keydown', (e) => {
+  console.log(e.key)
+  if (e.key == 'Enter') {
+    performOperation()
+    equalBtn.disabled = true
+  }
+})
 
 // Function to store and display numbers
 function numberEvent(operand) {
@@ -86,14 +95,12 @@ function numberEvent(operand) {
     displayScreen(number2)
   }
 }
-
-// Event listenter for number button 'click' events
+// number button 'click' events
 numberBtn.forEach((element) => element.addEventListener('click', () => {
   const operand = parseInt(element.textContent)
   numberEvent(operand)
 }))
-
-// Event listener for number key 'keydown' events
+// number key 'keydown' events
 window.addEventListener('keydown', (e) => {
   const holdValue = keycodeToValue(e)
   if (typeof holdValue == 'number') {
@@ -112,17 +119,17 @@ function operatorEvent(ops) {
     operator.push(ops)
   }
 }
-
-// Event listenter for operator button 'click' events
+// operator button 'click' events
 operatorBtn.forEach((element) => element.addEventListener('click', () => {
   const ops = element.textContent
   operatorEvent(ops)
 }))
-
-// Event listener for operator key 'keydown' events
+// operator key 'keydown' events
 window.addEventListener('keydown', (e) => {
   const holdValue = keycodeToValue(e)
-  if (typeof holdValue == 'string' && holdValue.length == 1) {
+  if (typeof holdValue == 'string'
+    && holdValue.length == 1
+    && holdValue != '.') {
     const ops = holdValue
     operatorEvent(ops)
   }
@@ -131,7 +138,9 @@ window.addEventListener('keydown', (e) => {
 // Function for decimal button
 function decimalEvent() {
   const dec = '.'
-  if (operator.length < 1 && !number1.includes(dec)) {
+  if (number1[0] % 1 != 0) {
+    decimalBtn.setAttribute('disabled', '')
+  } else if (operator.length < 1 && !number1.includes(dec)) {
     number1.push(dec)
     displayScreen(number1)
     decimalBtn.setAttribute('disabled', '')
@@ -141,13 +150,14 @@ function decimalEvent() {
     decimalBtn.setAttribute('disabled', '')
   }
 }
+// decimal button 'click' events
 decimalBtn.addEventListener('click', decimalEvent)
-
-//  window.addEventListener('keydown', (e) => {
-//     if (e.key == '.') {
-//       decimalEvent(e.key)
-//    }
-//  })
+// decimal key 'keydown events
+window.addEventListener('keydown', (e) => {
+  if (e.key == '.') {
+    decimalEvent(e.key)
+  }
+})
 
 // Function for backspace
 function backSpace() {
@@ -159,9 +169,9 @@ function backSpace() {
     displayScreen(number2)
   }
 }
-// Backspace click
+// backspace for click events
 clear.addEventListener('click', backSpace)
-//Backspace keydown
+// backspace for keydown events
 window.addEventListener('keydown', (e) => {
   if (e.key == 'Backspace') {
     backSpace(e)
@@ -173,6 +183,7 @@ ceBtn.addEventListener('click', () => {
   location.reload()
 })
 
+// Function for positive/negative button
 negative.addEventListener('click', () => {
   const neg = '-'
   if (operator.length < 1) {
