@@ -25,7 +25,7 @@ function solution(array, num1, num2) {
     case '-':
       result = num1 - num2;
       break;
-    case 'x':
+    case '*':
       result = num1 * num2;
       break;
     case '/':
@@ -68,16 +68,6 @@ function performOperation() {
 
   decimalBtn.disabled = false
 }
-
-operatorBtn.forEach((element) => element.addEventListener('click', () => {
-  if (operator.length < 1) {
-    operator.push(element.textContent)
-    decimalBtn.disabled = false
-  } else {
-    performOperation()
-    operator.push(element.textContent)
-  }
-}))
 
 equalBtn.addEventListener('click', performOperation)
 
@@ -132,6 +122,7 @@ negative.addEventListener('click', () => {
   }
 })
 
+// Function to store and display numbers
 function numberEvent(operand) {
   if (operator.length < 1) {
     number1.push(operand)
@@ -142,19 +133,48 @@ function numberEvent(operand) {
   }
 }
 
+// Event listenter for number button 'click' events
 numberBtn.forEach((element) => element.addEventListener('click', () => {
   const operand = parseInt(element.textContent)
   numberEvent(operand)
 }))
 
+// Event listener for number key 'keydown' events
 window.addEventListener('keydown', (e) => {
   const holdValue = keycodeToValue(e)
   if (typeof holdValue == 'number') {
-    const operand = parseInt(keycodeToValue(e))
+    const operand = parseInt(holdValue)
     numberEvent(operand)
   }
 })
 
+// Function to store and display operators
+function operatorEvent (ops) {
+  if (operator.length < 1) {
+    operator.push(ops)
+    decimalBtn.disabled = false
+  } else {
+    performOperation()
+    operator.push(ops)
+  }
+}
+
+// Event listenter for operator button 'click' events
+operatorBtn.forEach((element) => element.addEventListener('click', () => {
+  const ops = element.textContent
+  operatorEvent(ops)
+}))
+
+// Event listener for operator key 'keydown' events
+window.addEventListener('keydown', (e) => {
+  const holdValue = keycodeToValue(e)
+  if (typeof holdValue == 'string' && holdValue.length == 1) {
+    const ops = holdValue
+    operatorEvent(ops)
+  }
+})
+
+// Function to convert keyCodes to charachter values 
 function keycodeToValue(e) {
   let value;
   let y = e.keyCode
@@ -190,22 +210,21 @@ function keycodeToValue(e) {
       value = 0;
       break;
     case 107:
-      value = 1;
+      value = '+';
       break;
-    case 50:
-      value = 2;
+    case 109:
+      value = '-';
       break;
-    case 51:
-      value = 3;
+    case 111:
+      value = '/';
       break;
-    case 48:
-      value = 0;
+    case 106:
+      value = '*';
       break;
     default:
-      console.log(value)
-      console.log(y)
       value = 'err - not a valid key'
   }
+  console.log(y)
   console.log(value)
   return value
 }
