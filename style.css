@@ -1,12 +1,15 @@
 #calculator {
-  width: fit-content;
+  width: 175px;
   margin: 0 auto;
 }
 
 #display {
   border: 1px solid black;
-  padding: 3px;
+  padding: 5px;
   text-align: end;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
 }
 
 .buttons {
