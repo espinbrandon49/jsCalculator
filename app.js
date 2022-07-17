@@ -132,39 +132,27 @@ negative.addEventListener('click', () => {
   }
 })
 
-// numberBtn.forEach((element) => element.addEventListener('click', () => {
-//   const number = parseInt(element.textContent)
-//   if (operator.length < 1) {
-//     number1.push(number)
-//     displayScreen(number1)
-//     console.log(number1)
-//   } else {
-//     number2.push(number)
-//     displayScreen(number2)
-//     console.log(number2)
-//   }
-// }))
-
-function numberEvent(number) {
-  //number = parseInt(keycodeToValue(e))
+function numberEvent(operand) {
   if (operator.length < 1) {
-    number1.push(number)
+    number1.push(operand)
     displayScreen(number1)
-    console.log(number1)
   } else {
-    number2.push(number)
+    number2.push(operand)
     displayScreen(number2)
-    console.log(number2)
   }
 }
+
 numberBtn.forEach((element) => element.addEventListener('click', () => {
-  const number = parseInt(element.textContent)
-  numberEvent(number)
+  const operand = parseInt(element.textContent)
+  numberEvent(operand)
 }))
 
 window.addEventListener('keydown', (e) => {
-  const number = parseInt(keycodeToValue(e))
-  numberEvent(number)
+  const holdValue = keycodeToValue(e)
+  if (typeof holdValue == 'number') {
+    const operand = parseInt(keycodeToValue(e))
+    numberEvent(operand)
+  }
 })
 
 function keycodeToValue(e) {
@@ -180,8 +168,46 @@ function keycodeToValue(e) {
     case 57:
       value = 9;
       break;
+    case 52:
+      value = 4;
+      break;
+    case 53:
+      value = 5;
+      break;
+    case 54:
+      value = 6;
+      break;
+    case 49:
+      value = 1;
+      break;
+    case 50:
+      value = 2;
+      break;
+    case 51:
+      value = 3;
+      break;
+    case 48:
+      value = 0;
+      break;
+    case 107:
+      value = 1;
+      break;
+    case 50:
+      value = 2;
+      break;
+    case 51:
+      value = 3;
+      break;
+    case 48:
+      value = 0;
+      break;
+    default:
+      console.log(value)
+      console.log(y)
+      value = 'err - not a valid key'
   }
   console.log(value)
-  console.log(y)
   return value
 }
+
+//+ = 107, - =109, / = 111, * = 106; = = 13, . = 110, c= 8, del = 46
