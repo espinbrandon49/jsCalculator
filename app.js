@@ -51,9 +51,6 @@ function performOperation() {
     || number2.indexOf('-') == 0 && number2.length == 1
     ? num2 = 0
     : num2 = parseFloat(number2.join(''))
-  console.log(num1)
-  console.log(operator)
-  console.log(num2)
 
   const displayOperation = (() => {
     const solved = solution(operator, num1, num2)
@@ -65,62 +62,19 @@ function performOperation() {
     operator.splice(0, operator.length)
     number2.splice(0, number2.length)
   })()
-
   decimalBtn.disabled = false
 }
 
+// Event Listeners to evaluate an expression
 equalBtn.addEventListener('click', performOperation)
 
-decimalBtn.addEventListener('click', () => {
-  const dec = decimalBtn.textContent
-  if (operator.length < 1 && !number1.includes(dec)) {
-    number1.push(dec)
-    displayScreen(number1)
-    decimalBtn.setAttribute('disabled', '')
-  } else if (!number2.includes(dec)) {
-    number2.push(dec)
-    displayScreen(number2)
-    decimalBtn.setAttribute('disabled', '')
-  }
-})
-
-ceBtn.addEventListener('click', () => {
-  location.reload()
-})
-
-clear.addEventListener('click', () => {
-  if (operator.length < 1) {
-    number1.splice(-1, 1)
-    displayScreen(number1)
-  } else {
-    number2.splice(-1, 1)
-    displayScreen(number2)
-  }
-})
-
-negative.addEventListener('click', () => {
-  const neg = '-'
-  if (operator.length < 1) {
-    if (number1[0] < 0) {
-      number1[0] *= -1
-      displayScreen(number1)
-    } else if (!number1.includes(neg)) {
-      number1.unshift(neg)
-      displayScreen(number1)
-    } else {
-      number1.shift()
-      displayScreen(number1)
-    }
-  } else {
-    if (!number2.includes(neg)) {
-      (number2.unshift(neg))
-      displayScreen(number2)
-    } else {
-      number2.shift()
-      displayScreen(number2)
-    }
-  }
-})
+// keydown '='
+// window.addEventListener('keydown', (e) => {
+//   console.log(e.keyCode)
+//   if (e.keyCode == '187') {
+//     performOperation()
+//   }
+// })
 
 // Function to store and display numbers
 function numberEvent(operand) {
@@ -149,7 +103,7 @@ window.addEventListener('keydown', (e) => {
 })
 
 // Function to store and display operators
-function operatorEvent (ops) {
+function operatorEvent(ops) {
   if (operator.length < 1) {
     operator.push(ops)
     decimalBtn.disabled = false
@@ -174,59 +128,130 @@ window.addEventListener('keydown', (e) => {
   }
 })
 
-// Function to convert keyCodes to charachter values 
+// Function for decimal button
+function decimalEvent() {
+  const dec = '.'
+  if (operator.length < 1 && !number1.includes(dec)) {
+    number1.push(dec)
+    displayScreen(number1)
+    decimalBtn.setAttribute('disabled', '')
+  } else if (!number2.includes(dec)) {
+    number2.push(dec)
+    displayScreen(number2)
+    decimalBtn.setAttribute('disabled', '')
+  }
+}
+decimalBtn.addEventListener('click', decimalEvent)
+
+//  window.addEventListener('keydown', (e) => {
+//     if (e.key == '.') {
+//       decimalEvent(e.key)
+//    }
+//  })
+
+// Function for backspace
+function backSpace() {
+  if (operator.length < 1) {
+    number1.splice(-1, 1)
+    displayScreen(number1)
+  } else {
+    number2.splice(-1, 1)
+    displayScreen(number2)
+  }
+}
+// Backspace click
+clear.addEventListener('click', backSpace)
+//Backspace keydown
+window.addEventListener('keydown', (e) => {
+  if (e.key == 'Backspace') {
+    backSpace(e)
+  }
+})
+
+// Clear everything
+ceBtn.addEventListener('click', () => {
+  location.reload()
+})
+
+negative.addEventListener('click', () => {
+  const neg = '-'
+  if (operator.length < 1) {
+    if (number1[0] < 0) {
+      number1[0] *= -1
+      displayScreen(number1)
+    } else if (!number1.includes(neg)) {
+      number1.unshift(neg)
+      displayScreen(number1)
+    } else {
+      number1.shift()
+      displayScreen(number1)
+    }
+  } else {
+    if (!number2.includes(neg)) {
+      (number2.unshift(neg))
+      displayScreen(number2)
+    } else {
+      number2.shift()
+      displayScreen(number2)
+    }
+  }
+})
+
+// Function to convert keyCodes to character values 
 function keycodeToValue(e) {
   let value;
-  let y = e.keyCode
-  switch (y) {
-    case 55:
+  let ekey = e.key
+  switch (ekey) {
+    case '7':
       value = 7;
       break;
-    case 56:
+    case '8':
       value = 8;
       break;
-    case 57:
+    case '9':
       value = 9;
       break;
-    case 52:
+    case '4':
       value = 4;
       break;
-    case 53:
+    case '5':
       value = 5;
       break;
-    case 54:
+    case '6':
       value = 6;
       break;
-    case 49:
+    case '1':
       value = 1;
       break;
-    case 50:
+    case '2':
       value = 2;
       break;
-    case 51:
+    case '3':
       value = 3;
       break;
-    case 48:
+    case '0':
       value = 0;
       break;
-    case 107:
+    case '+':
       value = '+';
       break;
-    case 109:
+    case '-':
       value = '-';
       break;
-    case 111:
+    case '/':
       value = '/';
       break;
-    case 106:
+    case '*':
       value = '*';
+      break;
+    case '=':
+      value = '=';
+      break;
+    case '.':
+      value = '.';
       break;
     default:
       value = 'err - not a valid key'
   }
-  console.log(y)
-  console.log(value)
   return value
 }
-
-//+ = 107, - =109, / = 111, * = 106; = = 13, . = 110, c= 8, del = 46
