@@ -56,8 +56,6 @@ function performOperation() {
     : num2 = parseFloat(number2.join(''))
 
   const displayOperation = (() => {
-    console.log(number1)
-    console.log(number2)
     const solved = solution(operator, num1, num2)
     solved % 1 == 0
       ? display.innerHTML = solved
